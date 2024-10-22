@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 호버 효과 */
+        .table tbody tr:hover {
+            background-color: #f2f2f2; /* 호버 시 배경색 변경 */
+        }
+
+        /* 액티브 효과 */
+        .active {
+            background-color: #007bff; /* 클릭 시 배경색 변경 */
+            color: white; /* 텍스트 색상 변경 */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>상품 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button id="addButton" class="btn btn-primary float-end"
+                    onclick="location.href='addForm.html'"
+                    th:onclick="|location.href='@{/basic/items/add}'|"
+                    type="button">상품 등록
+            </button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>수량</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}" onmouseover="setActiveRow(this)" onmouseout="removeActiveRow(this)">
+                <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}"
+                       th:text="${item.id}">회원id</a></td>
+                <td><a href="item.html" th:href="@{|/basic/items/${item.id}|}" th:text="${item.itemName}">상품명</a></td>
+                <td th:text="${item.price}">10000</td>
+                <td th:text="${item.quantity}">10</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- /container -->
+
+<script>
+    let activeRow = null;
+
+    function setActiveRow(row) {
+        // 이전에 선택된 행의 'active' 클래스를 제거
+        if (activeRow) {
+            activeRow.classList.remove('active');
+        }
+
+        // 현재 클릭된 행에 'active' 클래스 추가
+        activeRow = row;
+        row.classList.add('active');
+    }
+
+    function removeActiveRow(row) {
+        // 마우스가 떼어지면 'active' 클래스 제거
+        if (activeRow === row) {
+            row.classList.remove('active');
+            activeRow = null; // activeRow 초기화
+        }
+    }
+</script>
+</body>
+</html>
