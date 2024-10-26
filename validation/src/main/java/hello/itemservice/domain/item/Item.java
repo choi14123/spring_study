@@ -8,18 +8,17 @@ import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.ScriptAssert;
 
 @Data
-@ScriptAssert(lang = "javascript", script = "_this.price * _this.quantity >= 100000", message = "총합이 10,000원 넘게 입력해주세요.")
 public class Item {
 
-    @NotNull(groups = UpdateCheck.class)
+    //@NotNull(groups = UpdateCheck.class)
     private Long id;
-    @NotBlank(groups = {UpdateCheck.class, SaveCheck.class})
+    //@NotBlank(groups = {UpdateCheck.class, SaveCheck.class})
     private String itemName;
-    @NotNull(groups = {UpdateCheck.class, SaveCheck.class})
-    @Range(min = 1000, max = 10000000)
+    //@NotNull(groups = {UpdateCheck.class, SaveCheck.class})
+    //@Range(min = 1000, max = 10000000)
     private Integer price;
-    @NotNull(groups = {UpdateCheck.class, SaveCheck.class})
-    @Max(value = 9999, groups = SaveCheck.class)
+    //@NotNull(groups = {UpdateCheck.class, SaveCheck.class})
+    //@Max(value = 9999, groups = SaveCheck.class)
     private Integer quantity;
 
     public Item() {
