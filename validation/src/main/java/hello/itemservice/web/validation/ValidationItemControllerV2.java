@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ValidationItemControllerV2 {
 
     private final ItemRepository itemRepository;
+    private final ItemValidator itemValidator;
 
     @GetMapping
     public String items(Model model) {
@@ -53,34 +54,8 @@ public class ValidationItemControllerV2 {
     public String addItemV1(@ModelAttribute Item item, BindingResult bindingResult,
                             RedirectAttributes redirectAttributes) {
 
-        //검증 로직
-        if (!StringUtils.hasText(item.getItemName())) {
-            bindingResult.addError(
-                    new FieldError("item", "itemName", item.getItemName(), false,
-                            new String[]{"required.item.itemName"}, null, null));
-        }
-        if (item.getPrice() == null || item.getPrice() < 1000 || item.getPrice() > 1000000) {
-            bindingResult.addError(
-                    new FieldError("item", "price", item.getPrice(), false, new String[]{"range.item.price"},
-                            new Object[]{1000, 1000000},
-                            null));
-        }
-        if (item.getQuantity() == null || item.getQuantity() >= 9999) {
-            bindingResult.addError(
-                    new FieldError("item", "quantity", item.getQuantity(), false, new String[]{"max.item.quantity"},
-                            new Object[]{9999}, null));
-        }
+        itemValidator.validate(item, bindingResult);
 
-        //특정 필드가 아닌 복합 룰 검증
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int resultPrice = item.getPrice() * item.getQuantity();
-            if (resultPrice < 100000) {
-                bindingResult.addError(
-                        new ObjectError("item", new String[]{"totalPriceMin"}, new Object[]{10000, resultPrice}, null));
-            }
-        }
-
-        //검증에 실패하면 다시 입력 폼으로 간다.
         if (bindingResult.hasErrors()) {
             log.info("errors = {} ", bindingResult);
             return "validation/v2/addForm";
