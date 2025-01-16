@@ -21,10 +21,14 @@ public class HomeController {
     private final MemberRepository memberRepository;
     private final SessionManager sessionManager;
 
-
+    //http://localhost:8080/login/oauth2/kakao
     //@GetMapping("/")
     public String home() {
         return "home";
+    }
+    @GetMapping("/login/callback")
+    public String a() {
+        return "OK";
     }
 
     //@GetMapping("/")

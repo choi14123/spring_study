@@ -28,7 +28,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
-        return "login/loginForm";
+        return "login/login";
     }
 
     //@PostMapping("/login")
